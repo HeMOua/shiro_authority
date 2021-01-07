@@ -1,3 +1,12 @@
+.idea/
+target/
+**.iml
+.settings/
+.classpath
+.mymetadata
+.myumldata
+.project
+.project
 # Compiled class file
 *.class
 

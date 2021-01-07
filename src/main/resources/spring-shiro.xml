@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd">
+
+  <!-- 授权 认证 -->
+  <bean id="simpleRealm" class="com.hemou.core.shiro.token.SimpleRealm">
+    <property name="credentialsMatcher">
+      <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+        <!--加密算法-->
+        <property name="hashAlgorithmName" value="MD5"/>
+        <!--加密次数-->
+        <property name="hashIterations" value="1024"/>
+      </bean>
+    </property>
+  </bean>
+
+  <!-- 用户信息记住我功能的相关配置 -->
+  <bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+    <!--<constructor-arg value="v_v-re-baidu"/>-->
+    <property name="httpOnly" value="true"/>
+    <!-- 配置存储rememberMe Cookie的domain为 一级域名
+    <property name="domain" value=".itboy.net"/>
+     -->
+    <property name="maxAge" value="2592000"/><!-- 30天时间，记住我30天 -->
+  </bean>
+
+  <!-- rememberMe管理器 -->
+  <bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+    <!-- rememberMe cookie加密的密钥 建议每个项目都不一样 默认AES算法 密钥长度（128 256 512 位）-->
+    <!--<property name="cipherKey"-->
+    <!--          value="#{T(org.apache.shiro.codec.Base64).decode('3AvVhmFLUs0KTA3Kprsdag==')}"/>-->
+    <property name="cookie" ref="rememberMeCookie"/>
+  </bean>
+
+  <!-- 安全管理器 -->
+  <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+    <property name="realm" ref="simpleRealm"/>
+    <!--<property name="sessionManager" ref="sessionManager"/>-->
+    <property name="rememberMeManager" ref="rememberMeManager"/>
+    <property name="cacheManager" ref="cacheManager"/>
+  </bean>
+
+  <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+    <!-- Set a net.sf.ehcache.CacheManager instance here if you already have one.  If not, a new one
+             will be creaed with a default config:
+             <property name="cacheManager" ref="ehCacheManager"/> -->
+    <!-- If you don't have a pre-built net.sf.ehcache.CacheManager instance to inject, but you want
+             a specific Ehcache configuration to be used, specify that here.  If you don't, a default
+             will be used.: -->
+    <property name="cacheManagerConfigFile" value="classpath:ehcache.xml"/>
+  </bean>
+
+
+  <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+    <property name="securityManager" ref="securityManager" />
+    <property name="loginUrl" value="/u/login.shtml" />
+    <property name="successUrl" value="/" />
+    <property name="unauthorizedUrl" value="/?login" />
+
+    <!--	初始配置，现采用自定义	-->
+    <property name="filterChainDefinitions" >
+      <value>
+        /** = anon
+
+        <!--/page/login.jsp = anon-->
+        <!--/page/register/* = anon-->
+        <!--/page/index.jsp = authc-->
+        <!--/page/addItem* = authc,roles[数据管理员]-->
+        <!--/page/file* = authc,roleOR[普通用户,数据管理员]-->
+        <!--/page/listItems* = authc,roleOR[数据管理员,普通用户]-->
+        <!--/page/showItem* = authc,roleOR[数据管理员,普通用户]-->
+        <!--/page/updateItem*=authc,roles[数据管理员]-->
+      </value>
+    </property>
+    <!-- 读取初始自定义权限内容-->
+    <!--<property name="filterChainDefinitions" value="#{shiroManager.loadFilterChainDefinitions()}"/>-->
+    <!--<property name="filters">-->
+    <!--  <util:map>-->
+    <!--    <entry key="login" value-ref="login"></entry>-->
+    <!--    <entry key="role" value-ref="role"></entry>-->
+    <!--    <entry key="simple" value-ref="simple"></entry>-->
+    <!--    <entry key="permission" value-ref="permission"></entry>-->
+    <!--    <entry key="kickout" value-ref="kickoutSessionFilter"></entry>-->
+    <!--  </util:map>-->
+    <!--</property>-->
+  </bean>
+</beans>

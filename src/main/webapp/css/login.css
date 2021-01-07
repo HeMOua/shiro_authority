@@ -1,0 +1,99 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+/*背景*/
+.main{
+    width: 100%;
+    height: 100vh;
+    background: url("../img/mn.png") no-repeat fixed;
+    background-size: 100%;
+}
+/*登录框*/
+.loginFrame{
+    width: 700px;
+    height: 440px;
+    background: rgba(0, 0, 0, .3);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+    padding: 50px;
+    box-sizing: border-box;
+    box-shadow: 0 0 5px 5px rgba(0,0,0,.4);
+}
+/*输入框*/
+.loginFrame > div{
+    width: 350px;
+    height: 50px;
+    margin: 40px auto;
+    color: white;
+}
+/*标题*/
+.loginFrame > p{
+    text-align: center;
+    color: white;
+    font-size: 25px;
+}
+/*输入框文字*/
+.loginFrame > div span{
+    display: inline-block;
+    cursor: pointer;
+    font-size: 18px;
+}
+.loginFrame > div input{
+    width: 100%;
+    height: 30px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid white;
+    outline: none;
+    color: white;
+}
+
+.loginFrame > div.rememberMe{
+    margin-bottom: 0;
+}
+
+.loginFrame > div input[type=checkbox]{
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+}
+
+.loginFrame .enterBtn{
+    margin-top: 0;
+    width: 200px;
+    height: 50px;
+    border-radius: 50px;
+    background-image: linear-gradient(to right, #c979d4, #fa719d);
+    text-align: center;
+    line-height: 50px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: .5s;
+}
+
+/*按钮悬浮效果*/
+.loginFrame .enterBtn:hover{
+    box-shadow: 0 0 10px rgba(0,0,0,.5) inset;
+    transition: .5s;
+}
+
+.loginFrame .register a{
+    display: inline-block;
+    position: absolute;
+    right: 5%;
+    bottom: 10px;
+    font-size: 14px;
+    color: rgba(0, 160, 233, 0.8);
+}
+
+.loginFrame .register a:hover{
+    color: #00a0e9;
+}
+
+svg{
+    vertical-align: middle;
+}
