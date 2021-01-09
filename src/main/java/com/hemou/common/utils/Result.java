@@ -23,16 +23,16 @@ public class Result {
         return success(message, null);
     }
 
-    public static Result fail(String msg){
-        return new Result(HTTPConstant.REQUEST_FAIL, msg, null);
+    public static Result warning(String msg){
+        return new Result(HTTPConstant.REQUEST_WARNING, msg, null);
     }
 
-    public static Result fail(){
-        return fail(null);
+    public static Result warning(){
+        return warning(null);
     }
 
     public static Result error(String msg){
-        return new Result(HTTPConstant.REQUEST_BAD_ERROR, msg, null);
+        return new Result(HTTPConstant.REQUEST_ERROR, msg, null);
     }
 
     public static Result error(){

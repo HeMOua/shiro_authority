@@ -8,7 +8,7 @@
     <title>登录</title>
 
     <link rel="stylesheet" href="${basePath}/css/login.css">
-    <link rel="stylesheet" href="${basePath}/css/common/common.css">
+    <link rel="stylesheet" href="${basePath}/css/common/style.css">
 </head>
 <body>
 
@@ -69,26 +69,13 @@
             }else if(!$.common.isEmpty(username) && $.common.isEmpty(password)){
                 $.modal.msgError('密码不可为空！')
             }else{
-                $.ajax({
-                    url: '${basePath}/u/submitLogin.shtml',
-                    type: 'post',
-                    dataType: 'json',
-                    data: {email: username, pswd: password, rememberMe: check},
-                    beforeSend: function () {
-                        $.modal.msg("正在处理中，请稍后...");
-                    },
-                    success: function (result) {
-                        $.modal.closeAll()
-                        if(result && result.status != modal_status.SUCCESS){
-                            $.modal.msgError(result.msg)
-                            $('#password').val('');
-                        }else{
-                            $.modal.msg('登录成功！');
-                            setTimeout(function(){
-                                //登录返回
-                                window.location.href= result.obj || "${basePath}/";
-                            },1000)
-                        }
+                $.operate.post('${basePath}/u/submitLogin.shtml', {email: username, pswd: password, rememberMe: check}, function (result) {
+                    if(result && result.status !== resp_status.SUCCESS){
+                        $('#password').val('');
+                    }else{
+                        setTimeout(function(){
+                            window.location.href= result.obj || "${basePath}/";
+                        },1500)
                     }
                 })
             }

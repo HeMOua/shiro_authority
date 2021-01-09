@@ -19,7 +19,7 @@
 		</style>
         <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
-            <script src="${basePath}/js/common/html5shiv.js"></script>
+        <script src=${basePath}"/js/common/html5shiv.js"></script>
         <![endif]-->
     </head>
 
@@ -33,7 +33,7 @@
                 <input type="password" id="re_password"  placeholder="Repeat the password">
                 <div style="text-align: left; margin-left: 10px;" id="vcode">
 	                <input type="text" name="verifyCode"   placeholder="Verification code" style="width: 110px; margin-left: -8px; margin-right: 8px;">
-                	<img src="${basePath}/getVerifyCode.shtml" />
+                	<img src="${basePath}/u/getVerifyCode.shtml" />
                 </div>
                 <button type="button" class="register">Register</button>
                 <button type="button" id="login" >Login</button>
@@ -47,13 +47,15 @@
         <script  src="${basePath}/js/common/supersized.3.2.7.min.js"></script>
         <script  src="${basePath}/js/common/supersized-init.js"></script>
 		<script  src="${basePath}/js/common/layer/layer.js"></script>
+        <script src="${basePath}/js/common/jquery.blockUI.js"></script>
+        <script  src="${basePath}/js/common/common.js"></script>
         <script >
 			jQuery(document).ready(function() {
 				//验证码
 				$("#vcode").on("click",'img',function(){
 					/**动态验证码，改变地址，多次在火狐浏览器下，不会变化的BUG，故这样解决*/
 					var i = new Image();
-					i.src = '${basePath}/getVerifyCode.shtml?'  + Math.random();
+					i.src = '${basePath}/u/getVerifyCode.shtml?'  + Math.random();
 					$(i).replaceAll(this);
 					//$(this).clone(true).attr("src",'${basePath}/open/getGifCode.shtml?'  + Math.random()).replaceAll(this);
 				});
@@ -76,23 +78,23 @@
 			    	}
 			    	var re_password = $("#re_password").val();
 			    	var password = $("#password").val();
-			    	if(password != re_password){
+			    	if(password !== re_password){
 			    		return layer.msg('2次密码输出不一样！',function(){}),!1;
 			    	}
-			    	
-			    	if($('[name=verifyCode]').val().length !=4){
+                    let verifyCode = $('[name=verifyCode]').val()
+			    	if(verifyCode.length !== 4){
 			    		return layer.msg('验证码的长度为4位！',function(){}),!1;
 			    	}
-			    	var load = layer.load();
-			    	$.post("${basePath}/u/submitRegister.shtml",$("#_form").serialize() ,function(result){
-			    		layer.close(load);
-			    		if(result && result.status!= 200){
-			    			return layer.msg(result.message,function(){}),!1;
-			    		}else{
-			    			layer.msg('注册成功！' );
-			    			window.location.href= result.back_url || "${basePath}/";
+			    	$.operate.post("${basePath}/u/submitRegister.shtml",{
+			    	    nickname: $('#nickname').val(), email: $('#email').val(),
+                        pswd: password, verifyCode
+                    } ,function(result){
+			    		if(result && result.status === resp_status.SUCCESS){
+			    		    setTimeout(function () {
+                                window.location.href= "${basePath}/" + result.obj || "${basePath}/";
+                            }, 2000)
 			    		}
-			    	},"json");
+			    	});
 			        
 			    });
 			    $("form :text,form :password").keyup(function(){

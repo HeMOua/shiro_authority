@@ -188,5 +188,6 @@ button:active {
 
 .connect a:hover { background-position: center bottom; }
 
-
-
+div.layui-layer-content.layui-layer-padding{
+    color: black !important;
+}

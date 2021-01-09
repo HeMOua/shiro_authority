@@ -3,61 +3,58 @@
         modal: {
             icon(type) {
                 let icon;
-                switch (type) {
-                    case modal_status.SUCCESS:
-                        icon = 1;
-                        break;
-                    case modal_status.ERROR:
-                        icon = 2;
-                        break;
-                    case modal_status.WARNING:
-                        icon = 0;
-                        break;
-                    default:
-                        icon = 3;
+                if (type === modal_status.WARNING) {
+                    icon = 0;
+                } else if (type === modal_status.SUCCESS) {
+                    icon = 1;
+                } else if (type === modal_status.ERROR) {
+                    icon = 2;
+                } else {
+                    icon = 3;
                 }
                 return icon;
             },
             msg(content, type) {
-                if (type != undefined) {
-                    layer.msg(content, {icon: $.modal.icon(type), time: 1000})
-                } else {
-                    layer.msg(content)
-                }
+                layer.msg(content, {icon: $.modal.icon(type), time: 1000})
             },
-            msgError: function (content) {
+            msgError(content) {
                 $.modal.msg(content, modal_status.ERROR)
             },
-            msgSuccess: function (content) {
+            msgSuccess(content) {
                 $.modal.msg(content, modal_status.SUCCESS)
             },
-            msgWarning: function (content) {
+            msgWarning(content) {
                 $.modal.msg(content, modal_status.WARNING)
             },
             // 打开遮罩层
             loading(message) {
-                $.blockUI({message: '<div class="loading-box"><div class="loading"></div> ' + message + '</div>'})
+                $.blockUI({message: '<div class="loading-box"><div class="loading"></div>&nbsp;&nbsp;' + message + '</div>'})
             },
             // 关闭遮罩层
-            closeLoading: function () {
+            closeLoading() {
                 setTimeout(function () {
                     $.unblockUI();
                 }, 50);
             },
             // 关闭全部窗体
-            closeAll: function () {
+            closeAll() {
                 layer.closeAll();
             },
+            reload(){
+                parent.location.reload()
+            }
         },
         operate: {
-            submit(url, type, dataType, data, callback) {
+            prototype(url, type, dataType, data, before, callback) {
                 let config = {
                     url: url,
                     type: type,
                     dataType: dataType,
                     data: data,
                     beforeSend: function () {
-                        $.modal.loading("正在处理中，请稍后...");
+                        if (typeof before == "function") {
+                            before()
+                        }
                     },
                     success: function (result) {
                         if (typeof callback == "function") {
@@ -68,21 +65,43 @@
                 };
                 $.ajax(config)
             },
+            loadingBeforeSubmit(url, type, dataType, data, callback){
+                $.operate.prototype(url, type, dataType, data, function () {
+                    $.modal.loading("正在处理中，请稍后...");
+                }, callback)
+            },
             // post请求传输
             post(url, data, callback) {
-                $.operate.submit(url, "post", "json", data, callback)
+                $.operate.loadingBeforeSubmit(url, "post", "json", data, callback)
             },
             // get请求传输
             get(url, callback) {
-                $.operate.submit(url, "get", "json", "", callback)
+                $.operate.loadingBeforeSubmit(url, "get", "json", "", callback)
             },
             ajaxSuccess(result) {
                 $.modal.closeLoading()
+                if(result.status === resp_status.SUCCESS){
+                    if($.common.isEmpty(result.msg)){
+                        $.modal.msgSuccess('操作成功！')
+                    }else{
+                        $.modal.msgSuccess(result.msg)
+                    }
+                }else if(result.status === resp_status.WARNING){
+                    $.modal.msgWarning(result.msg)
+                }else{
+                    $.modal.msgError(result.msg)
+                }
             }
         },
         common: {
             isEmpty(content) {
                 return (content == null || content.trim() === '')
+            },
+            trim: function (value) {
+                if (value == null) {
+                    return "";
+                }
+                return value.toString().replace(/(^\s*)|(\s*$)|\r|\n/g, "");
             }
         }
     })
@@ -90,9 +109,9 @@
 
 /** 响应状态码 */
 resp_status = {
-    SUCCESS: 200,
-    FAIL: 400,
-    ERROR: 500
+    SUCCESS: 0,
+    WARNING: 100,
+    ERROR: 200
 };
 
 /** 弹窗状态码 */

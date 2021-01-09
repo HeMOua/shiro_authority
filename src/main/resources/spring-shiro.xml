@@ -17,7 +17,7 @@
 
   <!-- 用户信息记住我功能的相关配置 -->
   <bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
-    <!--<constructor-arg value="v_v-re-baidu"/>-->
+    <constructor-arg value="rememberMe"/>
     <property name="httpOnly" value="true"/>
     <!-- 配置存储rememberMe Cookie的domain为 一级域名
     <property name="domain" value=".itboy.net"/>
@@ -28,8 +28,8 @@
   <!-- rememberMe管理器 -->
   <bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
     <!-- rememberMe cookie加密的密钥 建议每个项目都不一样 默认AES算法 密钥长度（128 256 512 位）-->
-    <!--<property name="cipherKey"-->
-    <!--          value="#{T(org.apache.shiro.codec.Base64).decode('3AvVhmFLUs0KTA3Kprsdag==')}"/>-->
+    <property name="cipherKey"
+              value="#{T(org.apache.shiro.codec.Base64).decode('3AvVhmFLUs0KTA3Kprsdag==')}"/>
     <property name="cookie" ref="rememberMeCookie"/>
   </bean>
 
@@ -61,28 +61,13 @@
     <!--	初始配置，现采用自定义	-->
     <property name="filterChainDefinitions" >
       <value>
-        /** = anon
-
-        <!--/page/login.jsp = anon-->
-        <!--/page/register/* = anon-->
-        <!--/page/index.jsp = authc-->
-        <!--/page/addItem* = authc,roles[数据管理员]-->
-        <!--/page/file* = authc,roleOR[普通用户,数据管理员]-->
-        <!--/page/listItems* = authc,roleOR[数据管理员,普通用户]-->
-        <!--/page/showItem* = authc,roleOR[数据管理员,普通用户]-->
-        <!--/page/updateItem*=authc,roles[数据管理员]-->
+        /u/** = anon
+        /js/** = anon
+        /css/** = anon
+        /img/** = anon
+        /user/** = user
+        /** = user
       </value>
     </property>
-    <!-- 读取初始自定义权限内容-->
-    <!--<property name="filterChainDefinitions" value="#{shiroManager.loadFilterChainDefinitions()}"/>-->
-    <!--<property name="filters">-->
-    <!--  <util:map>-->
-    <!--    <entry key="login" value-ref="login"></entry>-->
-    <!--    <entry key="role" value-ref="role"></entry>-->
-    <!--    <entry key="simple" value-ref="simple"></entry>-->
-    <!--    <entry key="permission" value-ref="permission"></entry>-->
-    <!--    <entry key="kickout" value-ref="kickoutSessionFilter"></entry>-->
-    <!--  </util:map>-->
-    <!--</property>-->
   </bean>
 </beans>

@@ -59,6 +59,6 @@
   </servlet-mapping>
 
   <welcome-file-list>
-    <welcome-file>u/login.shtml</welcome-file>
+    <welcome-file>user/index.shtml</welcome-file>
   </welcome-file-list>
 </web-app>

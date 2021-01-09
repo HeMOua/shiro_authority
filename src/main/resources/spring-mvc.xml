@@ -29,9 +29,17 @@
   </bean>
 
   <!--freeMarker配置-->
-  <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+  <bean id="freemarkerConfig" class="com.hemou.core.freemarker.FreeMarkerConfigurerExtend">
     <property name="templateLoaderPaths" value="/WEB-INF/ftl/"/>
     <property name="defaultEncoding" value="utf-8"/>
+    <property name="freemarkerSettings">
+      <props>
+        <!-- 自动装载，引入Freemarker，用于Freemarker Macro引入 -->
+        <prop key="auto_import">
+          /common/config/common.ftl as common
+        </prop>
+      </props>
+    </property>
   </bean>
 
   <!--文件上传-->

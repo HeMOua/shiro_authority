@@ -23,10 +23,10 @@ public class SimpleRealm extends AuthorizingRealm {
         ShiroToken token = (ShiroToken)authenticationToken;
         UUser user = userService.selectByEmail(token.getUsername());
         if(null == user){
-            throw new AccountException("用户不存在！");
+            throw new UnknownAccountException("用户不存在！");
         }else if(UUser.INVALID.equals(user.getStatus())){
-            throw new DisabledAccountException("账号已禁止使用！");
+            throw new LockedAccountException("账号已禁止使用！");
         }
-        return new SimpleAuthenticationInfo(token.getUsername(), user.getPswd(), getName());
+        return new SimpleAuthenticationInfo(user, user.getPswd(), getName());
     }
 }
