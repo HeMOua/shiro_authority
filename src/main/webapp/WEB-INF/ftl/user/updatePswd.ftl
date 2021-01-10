@@ -31,14 +31,14 @@
                            name="reNewPswd" placeholder="请再次输入新密码">
                 </div>
                 <div class="form-group">
-                    <input type="button" class="btn btn-success">确定修改</input>
+                    <input type="button" class="btn btn-success" value="确定修改">
                 </div>
             </form>
 
         </div>
     </div><#--/row-->
 </div>
-<script src="/js/common/jquery/jquery.form-2.82.js?${_v}"></script>
+<@common.js/>
 <script>
     function validate(msg, elem){
         let value = $.common.trim(elem.val())
@@ -60,6 +60,7 @@
             let eReNewPassword = $("#reNewPswd")
             let password = $.common.trim(ePassword.val())
             let newPassword = $.common.trim(eNewPassword.val())
+            let reNewPassword = $.common.trim(eReNewPassword.val())
             //判断参数
             let isValidity = validate('请输入原密码', ePassword)
             let isNewValidity = validate('请输入新密码', eNewPassword)
@@ -70,8 +71,12 @@
                 $.modal.msgError('两次密码不一致！')
                 return
             }
-            $.operate.post(url, {}, function (result) {
-                $("form :password").val('');
+            $.operate.post(url, {password, newPassword, reNewPassword}, function (result) {
+                if(result.status === resp_status.SUCCESS){
+                    setTimeout(function () {
+                        $.modal.reload()
+                    }, 1500)
+                }
             })
         })
     });

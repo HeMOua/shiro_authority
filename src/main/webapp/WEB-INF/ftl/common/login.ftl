@@ -39,7 +39,7 @@
             </label>
         </div>
         <div class="rememberMe">
-            <input type="checkbox"> 记住我
+            <input type="checkbox" checked> 记住我
         </div>
         <#--登录按钮-->
         <div class="enterBtn">

@@ -3,9 +3,9 @@ package com.hemou.user.controller;
 import com.hemou.common.controller.BaseController;
 import com.hemou.common.model.UUser;
 import com.hemou.common.service.UUserService;
-import com.hemou.common.utils.EncryptionUtil;
 import com.hemou.common.utils.LoggerUtils;
 import com.hemou.common.utils.Result;
+import com.hemou.common.utils.UserUtils;
 import com.hemou.core.shiro.token.TokenManager;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
@@ -83,7 +83,7 @@ public class AccountController extends BaseController {
         // 插入数据
         Date date = new Date();
         String pswd = entity.getPswd();
-        String password = EncryptionUtil.encryptionPassword(pswd);
+        String password = UserUtils.md5Password(pswd);
         entity.setPswd(password);
         entity.setStatus(UUser.VALID);
         entity.setCreateTime(date);
