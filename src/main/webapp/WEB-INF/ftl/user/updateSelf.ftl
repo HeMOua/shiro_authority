@@ -18,12 +18,12 @@
                 <div class="form-group">
                     <label for="nickname">昵称</label>
                     <input type="text" class="form-control" autocomplete="off" id="nickname" maxlength="8" name="nickname"
-                           value="${token.nickname?default('未设置')}" placeholder="请输入昵称">
+                           value="${token.nickname!('未设置')}" placeholder="请输入昵称">
                 </div>
                 <div class="form-group">
                     <label for="email">Email（不准修改）</label>
                     <input type="text" class="form-control " disabled autocomplete="off" id="email" maxlength="64"
-                           name="email" value="${token.email?default('未设置')}" placeholder="请输入帐号">
+                           name="email" value="${token.email!('未设置')}" placeholder="请输入帐号">
                 </div>
                 <div class="form-group">
                     <input class="btn btn-success" type="button" value="确定修改">

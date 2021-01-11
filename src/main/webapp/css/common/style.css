@@ -1,3 +1,13 @@
+body{
+    padding-top: 70px;
+}
+@media (min-width: 992px){
+    .col-md-2 > div.fix {
+        padding-top: 30px;
+        width: 120px;
+        position: fixed;
+    }
+}
 .navbar-blue{
     background: #0081c2;
     color: #ffffff;

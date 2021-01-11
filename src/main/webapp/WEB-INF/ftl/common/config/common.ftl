@@ -14,7 +14,7 @@
 </#macro>
 
 <#macro top>
-    <nav class="navbar navbar-blue">
+    <nav class="navbar navbar-blue navbar-fixed-top">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -53,40 +53,41 @@
 <#macro left type index>
 <#assign select = type + index/>
 <div class="col-md-2">
-    <#--个人中心-->
-    <div>
-        <div class="side-title" data-toggle="collapse" data-target="#collapseUser">
-            <a href="#">个人中心 <span class="caret"></span></a>
+    <div class="fix">
+        <#--个人中心-->
+        <div>
+            <div class="side-title" data-toggle="collapse" data-target="#collapseUser">
+                <a href="#">个人中心 <span class="caret"></span></a>
+            </div>
+            <ul id="collapseUser" class="collapse ${(type=='user')?string('in', '')}">
+                <li class="${(select=='user1')?string('active','')}"><a href="${basePath}/user/index.shtml">个人资料</a></li>
+                <li class="${(select=='user2')?string('active','')}"><a href="${basePath}/user/updateSelf.shtml" >资料修改</a></li>
+                <li class="${(select=='user3')?string('active','')}"><a href="${basePath}/user/updatePswd.shtml" >密码修改</a></li>
+                <li class="${(select=='user4')?string('active','')}"><a href="${basePath}/role/mypermission.shtml">我的权限</a></li>
+            </ul>
         </div>
-        <ul id="collapseUser" class="collapse ${(type=='user')?string('in', '')}">
-            <li class="${(select=='user1')?string('active','')}"><a href="${basePath}/user/index.shtml">个人资料</a></li>
-            <li class="${(select=='user2')?string('active','')}"><a href="${basePath}/user/updateSelf.shtml" >资料修改</a></li>
-            <li class="${(select=='user3')?string('active','')}"><a href="${basePath}/user/updatePswd.shtml" >密码修改</a></li>
-            <li class="${(select=='user4')?string('active','')}"><a href="${basePath}/role/mypermission.shtml">我的权限</a></li>
-        </ul>
-    </div>
-    <#--用户中心-->
-    <div>
-        <div class="side-title" data-toggle="collapse" data-target="#collapseMember">
-            <a href="#">用户管理 <span class="caret"></span></a>
+        <#--用户中心-->
+        <div>
+            <div class="side-title" data-toggle="collapse" data-target="#collapseMember">
+                <a href="#">用户管理 <span class="caret"></span></a>
+            </div>
+            <ul id="collapseMember" class="collapse ${(type=='member')?string('in', '')}">
+                <li class="${(select=='member1')?string('active','')}"><a href="${basePath}/member/list.shtml">用户列表</a></li>
+                <li class="${(select=='member2')?string('active','')}"><a href="${basePath}/member/online.shtml">在线用户</a></li>
+            </ul>
         </div>
-        <ul id="collapseMember" class="collapse ${(type=='member')?string('in', '')}">
-            <li class="${(select=='member1')?string('active','')}"><a href="${basePath}/member/list.shtml">用户列表</a></li>
-            <li class="${(select=='member2')?string('active','')}"><a href="${basePath}/member/online.shtml">在线用户</a></li>
-        </ul>
-    </div>
-    <#--权限管理-->
-    <div>
-        <div class="side-title" data-toggle="collapse" data-target="#collapseAuth">
-            <a href="#">权限管理 <span class="caret"></span></a>
+        <#--权限管理-->
+        <div>
+            <div class="side-title" data-toggle="collapse" data-target="#collapseAuth">
+                <a href="#">权限管理 <span class="caret"></span></a>
+            </div>
+            <ul id="collapseAuth" class="collapse ${(type=='auth')?string('in', '')}">
+                <li class="${(select=='auth1')?string('active','')}"><a href="${basePath}/role/index.shtml">角色列表</a></li>
+                <li class="${(select=='auth2')?string('active','')}"><a href="${basePath}/role/allocation.shtml">角色分配</a></li>
+                <li class="${(select=='auth3')?string('active','')}"><a href="${basePath}/permission/index.shtml">权限列表</a></li>
+                <li class="${(select=='auth4')?string('active','')}"><a href="${basePath}/permission/allocation.shtml">权限分配</a></li>
+            </ul>
         </div>
-        <ul id="collapseAuth" class="collapse ${(type=='auth')?string('in', '')}">
-            <li class="${(select=='auth1')?string('active','')}"><a href="${basePath}/role/index.shtml">角色列表</a></li>
-            <li class="${(select=='auth2')?string('active','')}"><a href="${basePath}/role/allocation.shtml">角色分配</a></li>
-            <li class="${(select=='auth3')?string('active','')}"><a href="${basePath}/permission/index.shtml">权限列表</a></li>
-            <li class="${(select=='auth4')?string('active','')}"><a href="${basePath}/permission/allocation.shtml">权限分配</a></li>
-        </ul>
     </div>
-
 </div>
 </#macro>

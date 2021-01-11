@@ -18,11 +18,11 @@
             <table class="table table-bordered">
                 <tr>
                     <th>昵称</th>
-                    <td>${token.nickname?default('未设置')}</td>
+                    <td>${token.nickname!('未设置')}</td>
                 </tr>
                 <tr>
                     <th>Email/帐号</th>
-                    <td>${token.email?default('未设置')}</td>
+                    <td>${token.email!('未设置')}</td>
                 </tr>
                 <tr>
                     <th>创建时间</th>

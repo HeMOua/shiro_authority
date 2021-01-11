@@ -2,6 +2,8 @@ package com.hemou.common.service;
 
 import com.hemou.common.model.UUser;
 
+import java.util.List;
+
 public interface UUserService {
 
     int deleteByPrimaryKey(Long id);
@@ -13,6 +15,8 @@ public interface UUserService {
     UUser selectByPrimaryKey(Long id);
 
     UUser selectByEmail(String email);
+
+    List<UUser> selectBySearch(String search);
 
     UUser login(String email, String password);
 

@@ -42,6 +42,11 @@
             },
             reload(){
                 parent.location.reload()
+            },
+            delayReload(time=1500){
+                setTimeout(function () {
+                    $.modal.reload()
+                }, time)
             }
         },
         operate: {

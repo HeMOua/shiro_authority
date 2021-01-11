@@ -7,8 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>登录</title>
 
-    <link rel="stylesheet" href="${basePath}/css/login.css">
     <link rel="stylesheet" href="${basePath}/css/common/style.css">
+    <link rel="stylesheet" href="${basePath}/css/login.css">
 </head>
 <body>
 

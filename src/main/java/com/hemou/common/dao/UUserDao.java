@@ -1,6 +1,9 @@
 package com.hemou.common.dao;
 
 import com.hemou.common.model.UUser;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface UUserDao {
     int deleteByPrimaryKey(Long id);
@@ -12,6 +15,8 @@ public interface UUserDao {
     UUser selectByPrimaryKey(Long id);
 
     UUser selectByEmail(String email);
+
+    List<UUser> selectBySearch(@Param("search") String search);
 
     UUser login(String email, String password);
 

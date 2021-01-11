@@ -6,6 +6,8 @@ import com.hemou.common.service.UUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service("userService")
 public class UUserServiceImpl implements UUserService {
 
@@ -30,6 +32,10 @@ public class UUserServiceImpl implements UUserService {
 
     public UUser selectByEmail(String email){
         return userDao.selectByEmail(email);
+    }
+
+    public List<UUser> selectBySearch(String search){
+        return userDao.selectBySearch(search);
     }
 
     public UUser login(String email, String password){
