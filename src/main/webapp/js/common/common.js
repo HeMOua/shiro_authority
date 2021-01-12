@@ -26,6 +26,53 @@
             msgWarning(content) {
                 $.modal.msg(content, modal_status.WARNING)
             },
+            confirm(content, callback){
+                layer.confirm(content, {
+                    icon: 3,
+                    title: "系统提示",
+                    btn: ['确认', '取消']
+                }, function (index) {
+                    layer.close(index);
+                    if (typeof callback == "function") {
+                        callback()
+                    }
+                });
+            },
+            open: function (modalName, url, width, height) {
+                let title
+                if ($.common.isEmpty(modalName)) {
+                    title = '系统弹窗'
+                }
+                if ($.common.isEmpty(url)) {
+                    url = "/404.shtml"
+                }
+                if ($.common.isEmpty(width)) {
+                    width = 800
+                }
+                if ($.common.isEmpty(height)) {
+                    height = $(window).height() - 50
+                }
+                layer.open({
+                    type: 2,
+                    area: [width + 'px', height + 'px'],
+                    fix: false,
+                    //不固定
+                    maxmin: true,
+                    shade: 0.3,
+                    title: title,
+                    content: url,
+                    btn: ['确定', '关闭'],
+                    // 弹层外区域关闭
+                    shadeClose: true,
+                    yes: function (index, layero) {
+                        let iframeWin = layero.find('iframe')[0];
+                        iframeWin.contentWindow.submitHandler(index, layero);
+                    },
+                    cancel: function(index) {
+                        return true;
+                    }
+                })
+            },
             // 打开遮罩层
             loading(message) {
                 $.blockUI({message: '<div class="loading-box"><div class="loading"></div>&nbsp;&nbsp;' + message + '</div>'})
@@ -36,6 +83,11 @@
                     $.unblockUI();
                 }, 50);
             },
+            // 关闭窗体
+            close: function () {
+                let index = parent.layer.getFrameIndex(window.name);
+                parent.layer.close(index);
+            },
             // 关闭全部窗体
             closeAll() {
                 layer.closeAll();
@@ -43,7 +95,7 @@
             reload(){
                 parent.location.reload()
             },
-            delayReload(time=1500){
+            delayReload(time=1000){
                 setTimeout(function () {
                     $.modal.reload()
                 }, time)
@@ -65,23 +117,102 @@
                         if (typeof callback == "function") {
                             callback(result)
                         }
-                        $.operate.ajaxSuccess(result)
                     }
                 };
                 $.ajax(config)
             },
-            loadingBeforeSubmit(url, type, dataType, data, callback){
+            submit(url, type, dataType, data, callback){
                 $.operate.prototype(url, type, dataType, data, function () {
                     $.modal.loading("正在处理中，请稍后...");
-                }, callback)
+                }, function (result) {
+                    if (typeof callback == "function") {
+                        callback(result)
+                    }
+                    $.operate.ajaxSuccess(result)
+                })
             },
             // post请求传输
             post(url, data, callback) {
-                $.operate.loadingBeforeSubmit(url, "post", "json", data, callback)
+                $.operate.submit(url, "post", "json", data, callback)
             },
             // get请求传输
             get(url, callback) {
-                $.operate.loadingBeforeSubmit(url, "get", "json", "", callback)
+                $.operate.submit(url, "get", "json", "", callback)
+            },
+            // 添加信息
+            add(modelName, url, height, width){
+                $.modal.open('添加' + modelName, url, width, height)
+            },
+            // 保存信息
+            save(url, data, callback){
+                $.operate.prototype(url, 'post', 'json', data, function () {
+                    $.modal.loading("正在处理中，请稍后...")
+                }, function (result) {
+                    if (typeof callback == "function") {
+                        callback(result)
+                    }
+                    $.operate.successCallback(result)
+                })
+            },
+            // 删除单个记录
+            remove(url, id, callback){
+                $.modal.confirm('确定删除该条信息吗？', function () {
+                    $.operate.post(url, {ids: id}, function (result) {
+                        if(typeof callback == 'function'){
+                            callback(result)
+                        }else {
+                            if (result.status === resp_status.SUCCESS) {
+                                $.modal.delayReload()
+                            }
+                        }
+                    })
+                })
+            },
+            removeAll(url, idList, callback){
+                if(idList.length === 0){
+                    $.modal.msgWarning('请先选择待删除用户！')
+                    return
+                }
+                let title = '确定删除选中的' + idList.length + '条信息吗？'
+                $.modal.confirm(title, function () {
+                    $.operate.post(url, {ids: idList.join(',')}, function (result) {
+                        if(typeof callback == 'function'){
+                            callback(result)
+                        }else{
+                            if(result.status === resp_status.SUCCESS){
+                                $.modal.delayReload()
+                            }
+                        }
+                    })
+                })
+            },
+            jumpToPage(url, data, basePath, callback){
+                $.operate.prototype(url, 'post', 'json', data, function () {
+                    $.modal.loading("正在处理中，请稍后...")
+                }, function (result) {
+                    $.modal.closeLoading()
+                    if(typeof callback == 'function'){
+                        callback(result)
+                    }
+                    if(result.status === resp_status.SUCCESS){
+                        if($.common.isEmpty(result.msg)){
+                            $.modal.msgSuccess('操作成功！')
+                        }else{
+                            $.modal.msgSuccess(result.msg)
+                        }
+                        setTimeout(function () {
+                            if($.common.startWith(result.obj, '/')){
+                                window.location.href = result.obj
+                            }else{
+                                window.location.href = `${basePath}/${result.obj}` || `${basePath}/`;
+                            }
+                        }, 1500)
+                    }else if(result.status === resp_status.WARNING){
+                        $.modal.msgWarning(result.msg)
+                    }else{
+                        $.modal.msgError(result.msg)
+                    }
+                })
             },
             ajaxSuccess(result) {
                 $.modal.closeLoading()
@@ -91,16 +222,55 @@
                     }else{
                         $.modal.msgSuccess(result.msg)
                     }
+                    $.modal.delayReload()
                 }else if(result.status === resp_status.WARNING){
                     $.modal.msgWarning(result.msg)
                 }else{
                     $.modal.msgError(result.msg)
                 }
+            },
+            // 成功回调执行事件（父窗体）
+            successCallback: function(result) {
+                $.modal.closeLoading();
+                if (result.status === resp_status.SUCCESS) {
+                    let parent = window.parent;
+                    $.modal.close();
+                    if($.common.isEmpty(result.msg)){
+                        parent.$.modal.msgSuccess('操作成功！')
+                    }else{
+                        parent.$.modal.msgSuccess(result.msg)
+                    }
+                    parent.$.modal.delayReload()
+                } else if (result.status === resp_status.WARNING) {
+                    $.modal.msgWarning(result.msg)
+                }  else {
+                    $.modal.msgError(result.msg);
+                }
             }
         },
         common: {
             isEmpty(content) {
-                return (content == null || content.trim() === '')
+                return (content == null || this.trim(content) === '')
+            },
+            isExistEmpty(){
+                let flag = false
+                for(let i = 0; i < arguments.length; i++){
+                    if($.common.isEmpty(arguments[i])){
+                        flag = true
+                        break
+                    }
+                }
+                return flag
+            },
+            // 判断字符串是否是以start开头
+            startWith: function(value, start) {
+                let reg = new RegExp("^" + start);
+                return reg.test(value)
+            },
+            // 判断字符串是否是以end结尾
+            endWith: function(value, end) {
+                let reg = new RegExp(end + "$");
+                return reg.test(value)
             },
             trim: function (value) {
                 if (value == null) {

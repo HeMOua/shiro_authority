@@ -2,6 +2,7 @@ package com.hemou.common.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * u_user
@@ -53,6 +54,15 @@ public class UUser implements Serializable {
      */
     private Long status;
 
+    private List<URole> roleList;
+
+    public List<URole> getRoleList() {
+        return roleList;
+    }
+
+    public void setRoleList(List<URole> roleList) {
+        this.roleList = roleList;
+    }
 
     public Long getId() {
         return id;

@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface UUserService {
 
-    int deleteByPrimaryKey(Long id);
+    int deleteByPrimaryKey(String ids);
 
     int insert(UUser record);
 

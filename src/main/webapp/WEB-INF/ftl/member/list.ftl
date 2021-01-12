@@ -51,9 +51,9 @@
                         </td>
                     </tr>
                 </#list>
-                <#if !users??>
+                <#if  users?? && users?size == 0>
                     <tr>
-                        <td class="text-center danger" colspan="6">没有找到用户</td>
+                        <td class="text-center" colspan="6">没有找到用户</td>
                     </tr>
                 </#if>
             </table>
@@ -63,27 +63,17 @@
 </div>
 <script>
     function forbidUserById(status, id){
-        $.operate.post('${basePath}/member/forbidUserById.shtml', {status, id}, function (result) {
-            if(result.status === resp_status.SUCCESS){
-                $.modal.delayReload()
-            }
-        })
+        $.operate.post('${basePath}/member/forbidUserById.shtml', {status, id})
     }
     function deleteUserById(id){
-        $.operate.post('${basePath}/member/deleteUserById.shtml', {id}, function (result) {
-            if(result.status === resp_status.SUCCESS){
-                $.modal.delayReload()
-            }
-        })
+        $.operate.remove('${basePath}/member/deleteUserById.shtml', id)
     }
 
     $(function () {
-        $('#searchForm').submit(function () {
-            let search = $.common.trim($('input[name="search"]').val())
-            if($.common.isEmpty(search)){
-                $.modal.msgError('搜索内容不可为空！')
-                return false
-            }
+        util.initCheckBox('table.table')
+
+        $('#btnDeleteAll').on('click', function () {
+            $.operate.removeAll('${basePath}/member/deleteUserById.shtml', util.checkedIdList())
         })
     })
 </script>

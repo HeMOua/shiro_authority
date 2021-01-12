@@ -5,5 +5,5 @@ public class Constant {
     /**
      * 页大小
      */
-    public static final int PAGE_SIZE = 5;
+    public static final String PAGE_SIZE = "10";
 }

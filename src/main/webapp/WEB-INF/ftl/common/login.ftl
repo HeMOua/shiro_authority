@@ -69,13 +69,10 @@
             }else if(!$.common.isEmpty(username) && $.common.isEmpty(password)){
                 $.modal.msgError('密码不可为空！')
             }else{
-                $.operate.post('${basePath}/u/submitLogin.shtml', {email: username, pswd: password, rememberMe: check}, function (result) {
+                let data = {email: username, pswd: password, rememberMe: check}
+                $.operate.jumpToPage('${basePath}/u/submitLogin.shtml', data, '${basePath}', function (result) {
                     if(result && result.status !== resp_status.SUCCESS){
                         $('#password').val('');
-                    }else{
-                        setTimeout(function(){
-                            window.location.href= result.obj || "${basePath}/";
-                        },1500)
                     }
                 })
             }

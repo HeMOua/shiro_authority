@@ -85,16 +85,11 @@
 			    	if(verifyCode.length !== 4){
 			    		return layer.msg('验证码的长度为4位！',function(){}),!1;
 			    	}
-			    	$.operate.post("${basePath}/u/submitRegister.shtml",{
-			    	    nickname: $('#nickname').val(), email: $('#email').val(),
+			    	let data = {
+                        nickname: $('#nickname').val(), email: $('#email').val(),
                         pswd: password, verifyCode
-                    } ,function(result){
-			    		if(result && result.status === resp_status.SUCCESS){
-			    		    setTimeout(function () {
-                                window.location.href= "${basePath}/" + result.obj || "${basePath}/";
-                            }, 2000)
-			    		}
-			    	});
+                    }
+			    	$.operate.jumpToPage("${basePath}/u/submitRegister.shtml", data, '${basePath}');
 			        
 			    });
 			    $("form :text,form :password").keyup(function(){

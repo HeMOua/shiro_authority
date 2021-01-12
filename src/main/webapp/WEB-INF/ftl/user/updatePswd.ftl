@@ -71,13 +71,7 @@
                 $.modal.msgError('两次密码不一致！')
                 return
             }
-            $.operate.post(url, {password, newPassword, reNewPassword}, function (result) {
-                if(result.status === resp_status.SUCCESS){
-                    setTimeout(function () {
-                        $.modal.reload()
-                    }, 1500)
-                }
-            })
+            $.operate.post(url, {password, newPassword, reNewPassword})
         })
     });
 </script>

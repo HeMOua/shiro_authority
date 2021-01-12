@@ -43,11 +43,7 @@
                 $.modal.msgError('昵称不能为空！')
                 $("#nickname").parent().removeClass('has-success').addClass('has-error')
             }else{
-                $.operate.post('${basePath}/user/update.shtml', {id, nickname}, function (result) {
-                    setTimeout(function () {
-                        $.modal.reload()
-                    }, 1000)
-                })
+                $.operate.post('${basePath}/user/update.shtml', {id, nickname})
             }
         })
     });

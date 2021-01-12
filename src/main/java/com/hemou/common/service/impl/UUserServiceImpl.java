@@ -3,19 +3,36 @@ package com.hemou.common.service.impl;
 import com.hemou.common.dao.UUserDao;
 import com.hemou.common.model.UUser;
 import com.hemou.common.service.UUserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.hemou.core.shiro.token.TokenManager;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 @Service("userService")
 public class UUserServiceImpl implements UUserService {
 
-    @Autowired
+    @Resource
     private UUserDao userDao;
 
-    public int deleteByPrimaryKey(Long id){
-        return userDao.deleteByPrimaryKey(id);
+    public int deleteByPrimaryKey(String ids){
+        try {
+            int count = 0;
+            String[] idList = ids.split(",");
+            for (String s : idList) {
+                Long id = Long.valueOf(s);
+                Long userId = TokenManager.getUser().getId();
+                if(id.equals(userId)) throw new RuntimeException("删除失败，不能删除自己！");
+
+                int delete = userDao.deleteByPrimaryKey(id);
+
+                if (delete == 0) throw new RuntimeException("删除失败，请重试！");
+                else count++;
+            }
+            return count;
+        }catch (Exception e){
+            throw new RuntimeException(e.getMessage(), e);
+        }
     }
 
     public int insert(UUser record){

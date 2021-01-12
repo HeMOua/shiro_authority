@@ -1,10 +1,10 @@
 <#macro js>
     <script src="${basePath}/js/common/jquery/jquery1.8.3.min.js"></script>
-    <script baseUrl="${basePath}" src="${basePath}/js/user.login.js"></script>
     <script src="${basePath}/js/common/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="${basePath}/js/common/jquery.blockUI.js"></script>
     <script src="${basePath}/js/common/layer/layer.js"></script>
     <script src="${basePath}/js/common/common.js"></script>
+    <script src="${basePath}/js/common/base.js" baseUrl="${basePath}"></script>
 </#macro>
 
 <#macro css>
@@ -90,4 +90,15 @@
         </div>
     </div>
 </div>
+</#macro>
+
+
+<#macro toNamesString list>
+    <#list list! as item>
+        ${item.name}<#if item_index != (list?size - 1)>&nbsp;,&nbsp;</#if>
+    </#list>
+</#macro>
+
+<#macro toIdsString list>
+    <#list list! as item>${item.id}<#if item_index != (list?size - 1)>,</#if></#list>
 </#macro>
