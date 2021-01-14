@@ -1,6 +1,7 @@
 package com.hemou.common.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * (URole)实体类
@@ -21,6 +22,15 @@ public class URole implements Serializable {
      */
     private String type;
 
+    private List<UPermission> permissionList;
+
+    public List<UPermission> getPermissionList() {
+        return permissionList;
+    }
+
+    public void setPermissionList(List<UPermission> permissionList) {
+        this.permissionList = permissionList;
+    }
 
     public Long getId() {
         return id;

@@ -1,6 +1,7 @@
 package com.hemou.common.service;
 
 import com.hemou.common.model.UPermission;
+import com.hemou.common.model.URole;
 
 import java.util.List;
 
@@ -54,5 +55,11 @@ public interface UPermissionService {
      * @return 是否成功
      */
     int deleteById(String ids);
+
+    List<UPermission> selectByRoleId(Long id);
+
+    void fillByRole(URole role);
+
+    void fillByRole(List<URole> roles);
 
 }

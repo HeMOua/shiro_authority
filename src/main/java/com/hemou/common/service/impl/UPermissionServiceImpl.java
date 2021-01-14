@@ -2,6 +2,7 @@ package com.hemou.common.service.impl;
 
 import com.hemou.common.dao.UPermissionDao;
 import com.hemou.common.model.UPermission;
+import com.hemou.common.model.URole;
 import com.hemou.common.service.UPermissionService;
 import org.springframework.stereotype.Service;
 
@@ -92,6 +93,24 @@ public class UPermissionServiceImpl implements UPermissionService {
             return count;
         }catch (Exception e){
             throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public List<UPermission> selectByRoleId(Long id) {
+        return uPermissionDao.selectByRoleId(id);
+    }
+
+    @Override
+    public void fillByRole(URole role) {
+        List<UPermission> permissions = uPermissionDao.selectByRoleId(role.getId());
+        role.setPermissionList(permissions);
+    }
+
+    @Override
+    public void fillByRole(List<URole> roles) {
+        for(URole r : roles){
+            fillByRole(r);
         }
     }
 }

@@ -11,11 +11,11 @@
 <@common.top/>
 <div class="container">
     <div class="row">
-        <@common.left 'auth' 2 />
+        <@common.left 'auth' 4 />
         <div class="col-md-10">
             <h2>权限分配</h2>
             <hr>
-            <form id="searchForm" action="${basePath}/role/index.shtml" class="form-inline">
+            <form id="searchForm" action="${basePath}/permission/allocation.shtml" class="form-inline">
                 <div class="form-group">
                     <input type="text" class="form-control" value="${search!}" name="search"
                            placeholder="输入角色类型 / 角色名称">
@@ -31,24 +31,24 @@
                     <th width="5%"><input type="checkbox" id="checkAll"/></th>
                     <th width="10%">角色名称</th>
                     <th width="10%">角色类型</th>
-                    <th width="60%">拥有的权限</th>
-                    <th width="15%">操作</th>
+                    <th>拥有的权限</th>
+                    <th width="12%">操作</th>
                 </tr>
-                <#list list! as it>
+                <#list roles! as it>
                     <tr>
                         <td><input value="${it.id}" check='box' type="checkbox"/></td>
                         <td>${it.name}</td>
                         <td>${it.type}</td>
-                        <td permissionIds="${it.permissionIds?default('')}">${it.permissionNames?default('-')}</td>
+                        <td data-ids="<@common.toIdsString it.permissionList/>" rid="${it.id}">
+                            <@common.toNamesString it.permissionList/>
+                        </td>
                         <td>
-                            <@shiro.hasPermission name="/permission/addPermission2Role.shtml">
-                                <i class="glyphicon glyphicon-share-alt"></i><a
-                                    href="javascript:selectPermissionById(${it.id});">选择权限</a>
-                            </@shiro.hasPermission>
+                            <i class="glyphicon glyphicon-share-alt"></i>
+                            <a href="javascript:selectPermission(${it.id});">选择权限</a>
                         </td>
                     </tr>
                 </#list>
-                <#if  list?? && list?size == 0>
+                <#if  roles?? && roles?size == 0>
                     <tr>
                         <td class="text-center" colspan="4">没有找到权限</td>
                     </tr>
@@ -60,7 +60,19 @@
     </div><#--/row-->
 </div>
 <script>
+    $(function () {
+        util.initCheckBox('table.table')
 
+        $('#btnDeleteAll').on('click', function () {
+            let checked = $('table.table').find('input:checkbox:checked:not([id])')
+            $.operate.removeAll('${basePath}/permission/cancelPermission.shtml', util.checkedIdList(checked))
+        })
+    })
+
+    function selectPermission(rid) {
+        let pids = $.common.trim($('td[rid='+ rid +']').data('ids'))
+        $.operate.add('权限至角色', '${basePath}/permission/choosePermission.shtml?rid='+ rid +'&pids=' + pids, '', 300)
+    }
 </script>
 </body>
 </html>

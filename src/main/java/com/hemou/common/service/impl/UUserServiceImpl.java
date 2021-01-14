@@ -5,6 +5,7 @@ import com.hemou.common.model.UUser;
 import com.hemou.common.service.UUserService;
 import com.hemou.core.shiro.token.TokenManager;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -66,4 +67,32 @@ public class UUserServiceImpl implements UUserService {
     public int updateByPrimaryKey(UUser record){
         return userDao.updateByPrimaryKey(record);
     }
+
+    public void allocRole(Long uid, String rids){
+        try {
+            this.cancelRole(String.valueOf(uid));
+            if(StringUtils.isEmpty(rids)) return;
+            String[] idList = rids.split(",");
+            for (String s : idList) {
+                Long id = Long.valueOf(s);
+                int insert = userDao.allocRole(uid, id);
+                if(insert != 1) throw new RuntimeException("分配失败，请重试！");
+            }
+        }catch (Exception e){
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
+    public void cancelRole(String ids){
+        try {
+            String[] idList = ids.split(",");
+            for (String s : idList) {
+                Long id = Long.valueOf(s);
+                userDao.cancelRole(id);
+            }
+        }catch (Exception e){
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
 }

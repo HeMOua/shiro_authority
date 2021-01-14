@@ -53,6 +53,13 @@
       </if>
     </where>
   </select>
+  <select id="selectByRoleId" resultType="com.hemou.common.model.UPermission">
+    select id,
+           url,
+           name
+    from u_permission p, u_role_permission rp
+    where p.id = rp.pid and rp.rid = #{id}
+  </select>
 
   <!--新增所有列-->
   <insert id="insert" keyProperty="id" useGeneratedKeys="true">

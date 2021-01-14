@@ -66,13 +66,14 @@
         util.initCheckBox('table.table')
 
         $('#btnDeleteAll').on('click', function () {
-
+            let checked = $('table.table').find('input:checkbox:checked:not([id])')
+            $.operate.removeAll('${basePath}/role/cancelRole.shtml', util.checkedIdList(checked))
         })
     })
 
     function selectRole(uid) {
         let rids = $.common.trim($('td[uid='+ uid +']').data('ids'))
-        $.operate.add('角色至用户', '${basePath}/role/chooseRole.shtml?rids=' + rids)
+        $.operate.add('角色至用户', '${basePath}/role/chooseRole.shtml?uid='+ uid +'&rids=' + rids, 400, 300)
     }
 </script>
 </body>

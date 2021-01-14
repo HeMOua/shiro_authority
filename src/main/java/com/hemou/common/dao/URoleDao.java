@@ -66,4 +66,7 @@ public interface URoleDao {
      */
     int deleteById(Long id);
 
+    int cancelPermission(@Param("rid") Long rid);
+
+    int allocPermission(@Param("rid") Long rid, @Param("pid") Long pid);
 }

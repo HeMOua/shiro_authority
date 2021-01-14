@@ -24,4 +24,8 @@ public interface UUserService {
 
     int updateByPrimaryKey(UUser record);
 
+    void allocRole(Long uid, String rids);
+
+    void cancelRole(String uids);
+
 }

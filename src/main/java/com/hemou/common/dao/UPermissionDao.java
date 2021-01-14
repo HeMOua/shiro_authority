@@ -64,4 +64,6 @@ public interface UPermissionDao {
      */
     int deleteById(Long id);
 
+    List<UPermission> selectByRoleId(@Param("id") Long id);
+
 }

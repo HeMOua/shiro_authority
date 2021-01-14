@@ -5,6 +5,7 @@ import com.hemou.common.model.URole;
 import com.hemou.common.model.UUser;
 import com.hemou.common.service.URoleService;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -113,5 +114,33 @@ public class URoleServiceImpl implements URoleService {
             fillByUser(u);
         }
     }
+
+    public void allocPermission(Long rid, String pids){
+        try {
+            this.cancelPermission(String.valueOf(rid));
+            if(StringUtils.isEmpty(pids)) return;
+            String[] idList = pids.split(",");
+            for (String s : idList) {
+                Long id = Long.valueOf(s);
+                int insert = roleDao.allocPermission(rid, id);
+                if(insert != 1) throw new RuntimeException("分配失败，请重试！");
+            }
+        }catch (Exception e){
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
+    public void cancelPermission(String rids){
+        try {
+            String[] idList = rids.split(",");
+            for (String s : idList) {
+                Long id = Long.valueOf(s);
+                roleDao.cancelPermission(id);
+            }
+        }catch (Exception e){
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
 
 }

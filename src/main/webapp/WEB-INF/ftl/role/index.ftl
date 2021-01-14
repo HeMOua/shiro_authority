@@ -67,7 +67,8 @@
         })
 
         $('#btnDeleteAll').on('click', function () {
-            $.operate.removeAll('${basePath}/role/deleteRole.shtml', util.checkedIdList())
+            let checked = $('table.table').find('input:checkbox:checked:not([id])')
+            $.operate.removeAll('${basePath}/role/deleteRole.shtml', util.checkedIdList(checked))
         })
     })
 

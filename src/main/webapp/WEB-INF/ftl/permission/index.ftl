@@ -63,7 +63,8 @@
         })
 
         $('#btnDeleteAll').on('click', function () {
-            $.operate.removeAll('${basePath}/permission/deletePermission.shtml', util.checkedIdList())
+            let checked = $('table.table').find('input:checkbox:checked:not([id])')
+            $.operate.removeAll('${basePath}/permission/deletePermission.shtml', util.checkedIdList(checked))
         })
     })
 

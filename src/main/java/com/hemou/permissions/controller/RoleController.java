@@ -126,11 +126,32 @@ public class RoleController extends BaseController {
     }
 
     @GetMapping("chooseRole")
-    public String allocForUser(String rids, Model model){
+    public String allocForUser(String uid, String rids, Model model){
         List<URole> roles = roleService.queryAllByLimit(0, Short.MAX_VALUE);
         model.addAttribute("roles", roles);
         model.addAttribute("rids", rids);
+        model.addAttribute("uid", uid);
         return prefix + "chooseRole";
+    }
+
+    @ResponseBody
+    @PostMapping("allocRole")
+    public Object allocRole(Long uid, String rids){
+        try {
+            LoggerUtils.info(getClass(), "分配用户角色，uid=%s, rids=%s", uid, rids);
+            userService.allocRole(uid, rids);
+            return Result.success("分配成功");
+        }catch (Exception e){
+            return Result.error(e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @PostMapping("cancelRole")
+    public Object cancelRole(String ids){
+        LoggerUtils.info(getClass(), "取消uid=%s所有角色", ids);
+        userService.cancelRole(ids);
+        return Result.success("操作成功");
     }
 
     @GetMapping("add")

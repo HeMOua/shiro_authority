@@ -27,22 +27,20 @@ function logout(){
             })
         }
 
-        util.checkedIdList = function (checked = 'input:checked:checkbox:not([id])', parent = 'table.table') {
-            let select = $(parent).find(checked);
+        util.checkedIdList = function (checked) {
             let ids = []
-            for(let i = 0; i < select.length; i++){
-                let element = $(select[i]);
-                ids.push(element.val())
+            for(let i = 0; i < checked.length; i++){
+                ids.push(checked.eq(i).val())
             }
             return ids
         }
 
         util.initCheckStatus = function (ids) {
             if($.common.isEmpty(ids)) return
-            let idList = ids.split(',')
+            let idList = ids.toString().split(',')
             $('input:checkbox').each(function () {
-                let id = $(this).data('id')
-                if(idList.contains(id)) $(this).prop('checked', true)
+                let id = $(this).val()
+                if(idList.indexOf(id + '') !== -1) $(this).prop('checked', true)
             })
         }
     })(util)

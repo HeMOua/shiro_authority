@@ -9,31 +9,30 @@
     <@common.js/>
 </head>
 <body>
-<div class="container" data-uid="${uid}">
-    <#list roles! as role>
+<div class="container" data-rid="${rid}">
+    <#list permissions! as permis>
         <div class="checkbox">
             <label>
-                <input type="checkbox" value="${role.id}"> ${role.name}
+                <input type="checkbox" value="${permis.id}"> ${permis.name}
             </label>
         </div>
     </#list>
 </div>
 <script>
     $(function () {
-        util.initCheckStatus('${rids}')
+        util.initCheckStatus('${pids}')
     })
 
     function submitHandler() {
-        let uid = $('.container').data('uid')
-        if($.common.isEmpty(uid)) {
+        let rid = $('.container').data('rid')
+        if($.common.isEmpty(rid)) {
             $.modal.msgError('系统错误，请刷新后尝试！')
             return
         }
-        $.operate.save('${basePath}/role/allocRole.shtml', {
-            rids: util.checkedIdList($('input:checkbox:checked')).join(','), uid
+        $.operate.save('${basePath}/permission/allocPermission.shtml', {
+            pids: util.checkedIdList($('input:checkbox:checked')).join(','), rid
         })
     }
 </script>
-
 </body>
 </html>

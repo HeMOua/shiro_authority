@@ -45,6 +45,10 @@
     delete from u_user
     where id = #{id,jdbcType=BIGINT}
   </delete>
+  <delete id="cancelRole">
+    delete from u_user_role
+    where uid = #{uid}
+  </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.hemou.common.model.UUser" useGeneratedKeys="true">
     insert into u_user (nickname, email, pswd, 
       create_time, last_login_time, `status`
@@ -95,6 +99,9 @@
         #{status,jdbcType=BIGINT},
       </if>
     </trim>
+  </insert>
+  <insert id="allocRole">
+    insert into u_user_role (uid, rid) VALUE (#{uid}, #{rid})
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.hemou.common.model.UUser">
     update u_user

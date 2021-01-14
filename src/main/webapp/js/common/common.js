@@ -39,7 +39,7 @@
                 });
             },
             open: function (modalName, url, width, height) {
-                let title
+                let title = modalName
                 if ($.common.isEmpty(modalName)) {
                     title = '系统弹窗'
                 }

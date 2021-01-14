@@ -73,7 +73,8 @@
         util.initCheckBox('table.table')
 
         $('#btnDeleteAll').on('click', function () {
-            $.operate.removeAll('${basePath}/member/deleteUserById.shtml', util.checkedIdList())
+            let checked = $('table.table').find('input:checkbox:checked:not([id])')
+            $.operate.removeAll('${basePath}/member/deleteUserById.shtml', util.checkedIdList(checked))
         })
     })
 </script>

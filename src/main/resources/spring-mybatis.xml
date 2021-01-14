@@ -81,6 +81,8 @@
       <tx:method name="update*" propagation="REQUIRED"/>
       <tx:method name="del*" propagation="REQUIRED"/>
       <tx:method name="insert*" propagation="REQUIRED"/>
+      <tx:method name="alloc*" propagation="REQUIRED"/>
+      <tx:method name="cancel*" propagation="REQUIRED"/>
       <tx:method name="*" propagation="SUPPORTS" read-only="true"/>
     </tx:attributes>
   </tx:advice>

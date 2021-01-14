@@ -67,6 +67,9 @@
     insert into shiro_demo.u_role(name, type)
     values (#{name}, #{type})
   </insert>
+  <insert id="allocPermission">
+    insert into u_role_permission (rid, pid) VALUE (#{rid}, #{pid})
+  </insert>
 
   <!--通过主键修改数据-->
   <update id="update">
@@ -87,6 +90,10 @@
     delete
     from shiro_demo.u_role
     where id = #{id}
+  </delete>
+  <delete id="cancelPermission">
+    delete from u_role_permission
+    where rid = #{rid}
   </delete>
 
 </mapper>

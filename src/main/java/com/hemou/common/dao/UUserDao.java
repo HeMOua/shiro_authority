@@ -23,4 +23,9 @@ public interface UUserDao {
     int updateByPrimaryKeySelective(UUser record);
 
     int updateByPrimaryKey(UUser record);
+
+    int allocRole(@Param("uid") Long uid, @Param("rid") Long rid);
+
+    int cancelRole(@Param("uid") Long uid);
+
 }

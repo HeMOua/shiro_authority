@@ -63,4 +63,8 @@ public interface URoleService {
 
     void fillByUser(List<UUser> users);
 
+    void allocPermission(Long rid, String pids);
+
+    void cancelPermission(String rids);
+
 }
