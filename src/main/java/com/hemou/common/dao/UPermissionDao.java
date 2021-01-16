@@ -4,6 +4,7 @@ import com.hemou.common.model.UPermission;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * (UPermission)表数据库访问层
@@ -66,4 +67,5 @@ public interface UPermissionDao {
 
     List<UPermission> selectByRoleId(@Param("id") Long id);
 
+    Set<String> selectByUserId(Long id);
 }

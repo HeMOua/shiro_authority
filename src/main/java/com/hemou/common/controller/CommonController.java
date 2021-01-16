@@ -19,6 +19,11 @@ public class CommonController {
         return String.format("user/%s", page);
     }
 
+    @GetMapping("unauthorized")
+    public String unauthorized(){
+        return "common/page/unauthorized";
+    }
+
     @GetMapping("u/getVerifyCode")
     public void getVerifyCode(HttpServletResponse response) throws IOException {
         ShearCaptcha captcha = CaptchaUtil.createShearCaptcha(120, 44, 4, 4);

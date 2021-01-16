@@ -41,6 +41,7 @@
     <property name="cacheManager" ref="cacheManager"/>
   </bean>
 
+  <!--缓存管理器-->
   <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
     <!-- Set a net.sf.ehcache.CacheManager instance here if you already have one.  If not, a new one
              will be creaed with a default config:
@@ -51,14 +52,24 @@
     <property name="cacheManagerConfigFile" value="classpath:ehcache.xml"/>
   </bean>
 
+  <!-- redis 的缓存 -->
+  <bean id="jedisManager" class="com.hemou.core.shiro.cache.JedisManager">
+    <property name="jedisPool" ref="jedisPool"/>
+  </bean>
 
+  <!--自定义过滤器-->
+  <bean id="roleOrFilter" class="com.hemou.core.shiro.filter.RoleOrFilter"/>
 
   <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
     <property name="securityManager" ref="securityManager" />
     <property name="loginUrl" value="/u/login.shtml" />
     <property name="successUrl" value="/" />
-    <property name="unauthorizedUrl" value="/?login" />
-
+    <property name="unauthorizedUrl" value="/unauthorized.shtml" />
+    <property name="filters">
+      <util:map>
+        <entry key="roleOr" value-ref="roleOrFilter"/>
+      </util:map>
+    </property>
     <!--	初始配置，现采用自定义	-->
     <property name="filterChainDefinitions" >
       <value>
@@ -67,6 +78,7 @@
         /css/** = anon
         /img/** = anon
         /user/** = user
+        /member/** = roleOr["admin,user"]
         /** = user
       </value>
     </property>

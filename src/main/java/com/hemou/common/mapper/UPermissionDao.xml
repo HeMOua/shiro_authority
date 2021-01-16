@@ -6,22 +6,25 @@
     <result property="id" column="id" jdbcType="INTEGER"/>
     <result property="url" column="url" jdbcType="VARCHAR"/>
     <result property="name" column="name" jdbcType="VARCHAR"/>
+    <result property="perms" column="perms" jdbcType="VARCHAR"/>
   </resultMap>
+
+  <sql id="Base_Column_List">
+    id, url, `name`, perms
+  </sql>
 
   <!--查询单个-->
   <select id="queryById" resultMap="UPermissionMap">
-    select id,
-           url,
-           name
+    select
+    <include refid="Base_Column_List" />
     from shiro_demo.u_permission
     where id = #{id}
   </select>
 
   <!--查询指定行数据-->
   <select id="queryAllByLimit" resultMap="UPermissionMap">
-    select id,
-           url,
-           name
+    select
+    <include refid="Base_Column_List" />
     from shiro_demo.u_permission
     limit #{offset}, #{limit}
   </select>
@@ -29,7 +32,7 @@
   <!--通过实体作为筛选条件查询-->
   <select id="queryAll" resultMap="UPermissionMap">
     select
-    id, url, name
+    <include refid="Base_Column_List" />
     from shiro_demo.u_permission
     <where>
       <if test="id != null">
@@ -45,7 +48,7 @@
   </select>
   <select id="selectBySearch" resultType="com.hemou.common.model.UPermission">
     select
-    id, url, name
+    <include refid="Base_Column_List" />
     from u_permission
     <where>
       <if test="search != null">
@@ -54,11 +57,15 @@
     </where>
   </select>
   <select id="selectByRoleId" resultType="com.hemou.common.model.UPermission">
-    select id,
-           url,
-           name
+    select
+    <include refid="Base_Column_List" />
     from u_permission p, u_role_permission rp
     where p.id = rp.pid and rp.rid = #{id}
+  </select>
+  <select id="selectByUserId" resultType="java.lang.String">
+    select distinct perms
+    from u_permission p, u_role_permission rp, u_user_role ur
+    where p.id = rp.pid and rp.rid = ur.rid and ur.uid = #{id}
   </select>
 
   <!--新增所有列-->

@@ -67,27 +67,43 @@
             </ul>
         </div>
         <#--用户中心-->
+        <@shiro.hasAnyRoles name="admin,user">
         <div>
             <div class="side-title" data-toggle="collapse" data-target="#collapseMember">
                 <a href="#">用户管理 <span class="caret"></span></a>
             </div>
             <ul id="collapseMember" class="collapse ${(type=='member')?string('in', '')}">
+                <@shiro.hasPermission name="user:list">
                 <li class="${(select=='member1')?string('active','')}"><a href="${basePath}/member/list.shtml">用户列表</a></li>
+                </@shiro.hasPermission>
+                <@shiro.hasPermission name="user:online">
                 <li class="${(select=='member2')?string('active','')}"><a href="${basePath}/member/online.shtml">在线用户</a></li>
+                </@shiro.hasPermission>
             </ul>
         </div>
+        </@shiro.hasAnyRoles>
         <#--权限管理-->
+        <@shiro.hasAnyRoles name="admin,perms">
         <div>
             <div class="side-title" data-toggle="collapse" data-target="#collapseAuth">
                 <a href="#">权限管理 <span class="caret"></span></a>
             </div>
             <ul id="collapseAuth" class="collapse ${(type=='auth')?string('in', '')}">
+                <@shiro.hasPermission name="role:list">
                 <li class="${(select=='auth1')?string('active','')}"><a href="${basePath}/role/index.shtml">角色列表</a></li>
+                </@shiro.hasPermission>
+                <@shiro.hasPermission name="role:alloc">
                 <li class="${(select=='auth2')?string('active','')}"><a href="${basePath}/role/allocation.shtml">角色分配</a></li>
+                </@shiro.hasPermission>
+                <@shiro.hasPermission name="perms:list">
                 <li class="${(select=='auth3')?string('active','')}"><a href="${basePath}/permission/index.shtml">权限列表</a></li>
+                </@shiro.hasPermission>
+                <@shiro.hasPermission name="perms:alloc">
                 <li class="${(select=='auth4')?string('active','')}"><a href="${basePath}/permission/allocation.shtml">权限分配</a></li>
+                </@shiro.hasPermission>
             </ul>
         </div>
+        </@shiro.hasAnyRoles>
     </div>
 </div>
 </#macro>

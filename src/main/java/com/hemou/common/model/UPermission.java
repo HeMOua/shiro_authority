@@ -21,6 +21,15 @@ public class UPermission implements Serializable {
      */
     private String name;
 
+    private String perms;
+
+    public String getPerms() {
+        return perms;
+    }
+
+    public void setPerms(String perms) {
+        this.perms = perms;
+    }
 
     public Long getId() {
         return id;

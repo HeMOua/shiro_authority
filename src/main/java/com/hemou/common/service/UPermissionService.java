@@ -4,6 +4,7 @@ import com.hemou.common.model.UPermission;
 import com.hemou.common.model.URole;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * (UPermission)表服务接口
@@ -31,6 +32,8 @@ public interface UPermissionService {
     List<UPermission> queryAllByLimit(int offset, int limit);
 
     List<UPermission> selectBySearch(String search);
+
+    Set<String> selectByUserId(Long id);
 
     /**
      * 新增数据

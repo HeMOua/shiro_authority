@@ -21,8 +21,12 @@
                            placeholder="输入角色类型 / 角色名称">
                 </div>
                 <button class="btn btn-primary">查询</button>
+                <@shiro.hasPermission name="role:add">
                 <input type="button" class="btn btn-success" id="btnAdd" value="增加角色">
+                </@shiro.hasPermission>
+                <@shiro.hasPermission name="role:removeAll">
                 <input type="button" class="btn btn-danger" id="btnDeleteAll" value="删除">
+                </@shiro.hasPermission>
             </form>
             <hr>
 
@@ -40,8 +44,10 @@
                             <td>${it.name!('-')}</td>
                             <td>${it.type!('-')}</td>
                             <td>
+                                <@shiro.hasPermission name="role:remove">
                                 <i class="glyphicon glyphicon-remove"></i>
                                 <a href="javascript:deleteById(${it.id});">删除</a>
+                                </@shiro.hasPermission>
                             </td>
                         </tr>
                     </#list>

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Set;
 
 /**
  * (UPermission)表服务实现类
@@ -47,6 +48,9 @@ public class UPermissionServiceImpl implements UPermissionService {
         return uPermissionDao.selectBySearch(search);
     }
 
+    public Set<String> selectByUserId(Long id){
+        return uPermissionDao.selectByUserId(id);
+    }
 
     /**
      * 新增数据
