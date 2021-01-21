@@ -56,6 +56,18 @@ public class UUser implements Serializable {
 
     private List<URole> roleList;
 
+    public UUser() {}
+
+    public UUser(UUser user) {
+        this.id = user.getId();
+        this.nickname = user.getNickname();
+        this.email = user.getEmail();
+        this.pswd = user.getPswd();
+        this.createTime = user.getCreateTime();
+        this.lastLoginTime = user.getLastLoginTime();
+        this.status = user.getStatus();
+    }
+
     public List<URole> getRoleList() {
         return roleList;
     }

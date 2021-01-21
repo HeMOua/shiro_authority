@@ -9,20 +9,29 @@ import com.hemou.common.service.UUserService;
 import com.hemou.common.utils.LoggerUtils;
 import com.hemou.common.utils.Page;
 import com.hemou.common.utils.Result;
+import com.hemou.core.shiro.session.CustomSessionManager;
+import com.hemou.core.shiro.token.TokenManager;
+import com.hemou.user.bo.UserOnlineBo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
+import java.io.Serializable;
 import java.util.List;
 
 @Controller
 @RequestMapping("member")
 public class MemberController extends BaseController {
 
-    @Resource
-    private UUserService userService;
+    private final UUserService userService;
+
+    private final CustomSessionManager sessionManager;
+
+    public MemberController(UUserService userService, CustomSessionManager sessionManager) {
+        this.userService = userService;
+        this.sessionManager = sessionManager;
+    }
 
     /**
      * 列出所有用户
@@ -98,5 +107,27 @@ public class MemberController extends BaseController {
         }catch (Exception e){
             return Result.error(e.getMessage());
         }
+    }
+
+    @GetMapping("online")
+    public String online(Model model){
+        List<UserOnlineBo> users = sessionManager.getAllUserOnline();
+        model.addAttribute("users", users);
+        return "member/online";
+    }
+
+    @GetMapping("onlineDetails/{id}")
+    public String onlineDetails(@PathVariable String id, Model model){
+        UserOnlineBo bo = sessionManager.getUserOnlineBo(id);
+        model.addAttribute("bo", bo);
+        return "member/onlineDetails";
+    }
+
+    @ResponseBody
+    @PostMapping("changeSessionStatus")
+    public Object changeSessionStatus(String sessionId, boolean status){
+        Serializable id = TokenManager.getSession().getId();
+        if(sessionId.equals(id)) return Result.error("不能自己踢出自己！");
+        return sessionManager.changeSessionStatus(status, sessionId);
     }
 }

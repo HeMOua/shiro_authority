@@ -37,7 +37,7 @@
                             <ul class="dropdown-menu">
                                 <li><a href="${basePath}/user/index.shtml">个人资料</a></li>
                                 <li><a href="${basePath}/role/mypermission.shtml">我的权限</a></li>
-                                <li><a href="javascript:void(0);" onclick="logout();">退出登录</a></li>
+                                <li><a href="javascript:" onclick="logout();">退出登录</a></li>
                             </ul>
                         </li>
                     </@shiro.user>
@@ -57,7 +57,7 @@
         <#--个人中心-->
         <div>
             <div class="side-title" data-toggle="collapse" data-target="#collapseUser">
-                <a href="#">个人中心 <span class="caret"></span></a>
+                <a href="javascript:">个人中心 <span class="caret"></span></a>
             </div>
             <ul id="collapseUser" class="collapse ${(type=='user')?string('in', '')}">
                 <li class="${(select=='user1')?string('active','')}"><a href="${basePath}/user/index.shtml">个人资料</a></li>
@@ -70,7 +70,7 @@
         <@shiro.hasAnyRoles name="admin,user">
         <div>
             <div class="side-title" data-toggle="collapse" data-target="#collapseMember">
-                <a href="#">用户管理 <span class="caret"></span></a>
+                <a href="javascript:">用户管理 <span class="caret"></span></a>
             </div>
             <ul id="collapseMember" class="collapse ${(type=='member')?string('in', '')}">
                 <@shiro.hasPermission name="user:list">
@@ -86,7 +86,7 @@
         <@shiro.hasAnyRoles name="admin,perms">
         <div>
             <div class="side-title" data-toggle="collapse" data-target="#collapseAuth">
-                <a href="#">权限管理 <span class="caret"></span></a>
+                <a href="javascript:">权限管理 <span class="caret"></span></a>
             </div>
             <ul id="collapseAuth" class="collapse ${(type=='auth')?string('in', '')}">
                 <@shiro.hasPermission name="role:list">

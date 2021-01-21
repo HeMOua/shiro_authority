@@ -25,28 +25,28 @@
                     <th>状态</th>
                     <th>操作</th>
                 </tr>
-                <#list list! as it>
+                <#list users! as it>
                     <tr>
                         <td>${it.sessionId!('未设置')}</td>
                         <td>${it.nickname!('未设置')}</td>
                         <td>${it.email!('未设置')}</td>
-                        <td>${it.startTime?string('HH:mm:ss yy-MM-dd')}</td>
-                        <td>${it.lastAccess?string('HH:mm:ss yy-MM-dd')}</td>
+                        <td>${it.startTime?string('yy-MM-dd HH:mm:ss')}</td>
+                        <td>${it.lastAccess?string('yy-MM-dd HH:mm:ss')}</td>
                         <td>${(it.sessionStatus)?string('有效','已踢出')}</td>
                         <td>
                             <a href="${basePath}/member/onlineDetails/${it.sessionId}.shtml">详情</a>
 
-                            <a v="onlineDetails" href="javascript:void(0);" sessionId="${it.sessionId}"
-                               status="${(it.sessionStatus)?string(1,0)}">
-                                ${(it.sessionStatus)?string('踢出','激活')}
-                            </a>
-
+                            <@shiro.hasPermission name="user:kickout">
+                                <a href="javascript:" data-status="${it.sessionStatus?string('false','true')}" data-id="${it.sessionId}">
+                                    ${(it.sessionStatus)?string('踢出','激活')}
+                                </a>
+                            </@shiro.hasPermission>
                         </td>
                     </tr>
                 </#list>
-                <#if !list??>
+                <#if users?? && users?size == 0>
                     <tr>
-                        <td class="center-block" callspan="4">没有用户</td>
+                        <td class="center-block" colspan="4">没有用户</td>
                     </tr>
                 </#if>
 
@@ -54,6 +54,17 @@
         </div>
     </div><#--/row-->
 </div>
-
+<script>
+    $(function () {
+        $('a[data-status]').on('click', function () {
+            let status = $(this).data('status')
+            let sessionId = $(this).data('id')
+            let msg = '确定'+ $(this).text() +'该用户吗？'
+            $.modal.confirm(msg, function () {
+                $.operate.post('${basePath}/member/changeSessionStatus.shtml', {status, sessionId})
+            })
+        })
+    })
+</script>
 </body>
 </html>

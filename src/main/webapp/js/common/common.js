@@ -227,6 +227,9 @@
                     $.modal.msgWarning(result.msg)
                 }else{
                     $.modal.msgError(result.msg)
+                    if(!$.common.isEmpty(result.obj)){
+                        $.modal.delayReload()
+                    }
                 }
             },
             // 成功回调执行事件（父窗体）

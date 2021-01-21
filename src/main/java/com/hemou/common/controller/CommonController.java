@@ -19,9 +19,14 @@ public class CommonController {
         return String.format("user/%s", page);
     }
 
-    @GetMapping("unauthorized")
+    @GetMapping("u/unauthorized")
     public String unauthorized(){
         return "common/page/unauthorized";
+    }
+
+    @GetMapping("u/kickout")
+    public String kickout(){
+        return "common/page/kicked_out";
     }
 
     @GetMapping("u/getVerifyCode")

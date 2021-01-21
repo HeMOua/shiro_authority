@@ -29,14 +29,14 @@
                 <tr>
                     <th><input type="checkbox" id="checkAll"/></th>
                     <th>权限名称</th>
-                    <th>角色类型</th>
+                    <th>权限标记</th>
                     <th>操作</th>
                 </tr>
                 <#list list! as it>
                     <tr>
                         <td><input value="${it.id}" check='box' type="checkbox"/></td>
                         <td>${it.name!('-')}</td>
-                        <td>${it.url!('-')}</td>
+                        <td>${it.perms!('-')}</td>
                         <td>
                             <i class="glyphicon glyphicon-remove"></i>
                             <a href="javascript:deleteById(${it.id});">删除</a>
