@@ -23,6 +23,7 @@ public class JedisManager {
             return jedis;
         } catch (JedisConnectionException e) {
             LoggerUtils.error(getClass(), "尚未启动redis，系统自动退出");
+            System.exit(0);
             throw new JedisConnectionException(e);
         } catch (Exception e) {
             throw new RuntimeException(e);

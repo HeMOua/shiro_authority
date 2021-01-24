@@ -28,7 +28,6 @@ public class JedisShiroSessionRepository implements ShiroSessionRepository {
             byte[] value = ObjectUtil.serialize(session);
             getJedisManager().setex(ShiroConstant.DB_INDEX, key, value, (int) (session.getTimeout() / 1000));
         } catch (Exception e) {
-            e.printStackTrace();
             LoggerUtils.error(getClass(), "save session error，id:[%s]",session.getId());
         }
     }
@@ -39,7 +38,6 @@ public class JedisShiroSessionRepository implements ShiroSessionRepository {
         try {
             getJedisManager().del(ShiroConstant.DB_INDEX, ObjectUtil.serialize(buildRedisSessionKey(id)));
         } catch (Exception e) {
-            e.printStackTrace();
             LoggerUtils.error(getClass(), "删除session出现异常，id:[%s]",id);
         }
     }
@@ -53,7 +51,6 @@ public class JedisShiroSessionRepository implements ShiroSessionRepository {
                     ObjectUtil.serialize(buildRedisSessionKey(id)));
             session = ObjectUtil.deserialize(value);
         } catch (Exception e) {
-            e.printStackTrace();
             LoggerUtils.error(getClass(), "获取session异常，id:[%s]",id);
         }
         return session;
@@ -65,7 +62,6 @@ public class JedisShiroSessionRepository implements ShiroSessionRepository {
         try {
             sessions = getJedisManager().getAllSession(ShiroConstant.DB_INDEX, ShiroConstant.SHIRO_SESSION_TAG);
         } catch (Exception e) {
-            e.printStackTrace();
             LoggerUtils.error(getClass(), "获取全部session异常");
         }
         return sessions;

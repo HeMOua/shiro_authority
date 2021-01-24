@@ -1,6 +1,7 @@
 package com.hemou.core.shiro.filter;
 
 import com.hemou.common.utils.HTTPUtils;
+import com.hemou.common.utils.LoggerUtils;
 import com.hemou.common.utils.Result;
 import com.hemou.core.shiro.ShiroConstant;
 import com.hemou.core.shiro.cache.JedisManager;
@@ -42,9 +43,13 @@ public class KickoutFilter extends AccessControlFilter {
             if(sessionId.equals(sessionStr)){
                 jedisManager.setex(ShiroConstant.DB_INDEX, keyByte, sessionIdByte, ShiroConstant.SESSION_EXPIRE_TIME);
             }else{ // 如果 session 不一致，那就是在他处登录了
-                Session oldSession = sessionRepository.getSession(sessionId);
-                oldSession.setAttribute(ShiroConstant.KICK_OUT_STATUS_KEY, true);
-                sessionRepository.saveSession(oldSession);
+                Session oldSession = sessionRepository.getSession(sessionStr);
+                jedisManager.setex(ShiroConstant.DB_INDEX, keyByte, sessionId.toString().getBytes(), ShiroConstant.SESSION_EXPIRE_TIME);
+                if(null != oldSession){ // 设置老session的踢出状态为true
+                    oldSession.setAttribute(ShiroConstant.KICK_OUT_STATUS_KEY, true);
+                    sessionRepository.saveSession(oldSession);
+                    LoggerUtils.info(getClass(), "kickout old session success,oldId[%s]", sessionStr);
+                }
             }
         }else{ // 如果不存在记录，则添加
             jedisManager.setex(ShiroConstant.DB_INDEX, keyByte, sessionId.toString().getBytes(), ShiroConstant.SESSION_EXPIRE_TIME);

@@ -145,10 +145,10 @@
         /js/** = anon
         /css/** = anon
         /img/** = anon
-        /user/** = online
-        /member/** = roleOr["admin,user"],online
-        /permission/** = roleOr["admin,perms"],online
-        /role/** = roleOr["admin,role"],online
+        /user/** = user,online,kickout
+        /member/** = user,roleOr["admin,user"],online,kickout
+        /permission/** = user,roleOr["admin,perms"],online,kickout
+        /role/** = user,roleOr["admin,role"],online,kickout
         /** = user
       </value>
     </property>

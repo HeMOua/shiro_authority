@@ -8,7 +8,7 @@
 </#macro>
 
 <#macro css>
-    <link rel="shortcut icon" href="#"/>
+    <link rel="shortcut icon" href="${basePath}/favicon.ico"/>
     <link href="${basePath}/js/common/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
     <link href="${basePath}/css/common/style.css" rel="stylesheet">
 </#macro>

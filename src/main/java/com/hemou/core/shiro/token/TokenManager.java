@@ -112,6 +112,5 @@ public class TokenManager {
      */
     public static void logout(){
         getSubject().logout();
-        getSession().stop();
     }
 }

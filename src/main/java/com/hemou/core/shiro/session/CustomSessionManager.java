@@ -81,7 +81,14 @@ public class CustomSessionManager {
     }
 
     private UserOnlineBo getSessionBo(Session session) {
-        //获取session登录信息。
+        /**
+         * 获取session登录信息。
+         * 当用户登录成功后，shiro会把用户名放到session的attribute中，
+         * key为DefaultSubjectContext.PRINCIPALS_SESSION_KEY
+         * 也就是获取用户登录的，@link SampleRealm.doGetAuthenticationInfo(...)方法中
+         * return new SimpleAuthenticationInfo(user,user.getPswd(), getName());
+         * 的user 对象。
+         */
         Object obj = session.getAttribute(DefaultSubjectContext.PRINCIPALS_SESSION_KEY);
         if (null == obj) {
             return null;
